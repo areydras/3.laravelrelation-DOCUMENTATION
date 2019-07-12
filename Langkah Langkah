@@ -1,0 +1,70 @@
+1. User Controller bagian hasOne = user dan passport. yg berhubungan dengan passport adalah one to one
+2. Buka Model User kemudian ke Model Passport
+3. Buka Model User kemudian ke Model Forum. yg berhubungan dengan forum adalah one to many
+
+Many to Many itu = table_pertama, table_kedua, penghubung_table_pertama_kedua / (users, lessons, lesson_user) 
+jadi didalam tambel penghubung itu ada user_id dan juga lesson_id
+4. Buka Model User Kemudian ke Model Lesson. yg berhubungan dengan lesson adalah many to many
+5. Buka lesson.blade.php
+
+// polymorphic one to many
+ // sistemnya hampir seperti like, contoh:
+                         // LIKES
+ ----------------------------------------------------------+
+    id     |   likeable_id     |   likeable_type      |
+     1     |        1          |  App\Models\Forum    | // artinya ada yg ngelike di forum dengan id 1 (likeable_id). berarti forum yg id nya 1 mempunyai 1 like
+     2     |        1          |  App\Models\Forum    | // artinya ada yg ngelike di forum dengan id 1 (likeable_id). berarti forum yg id nya 1 mempunyai 2 like
+     3     |        2          |  App\Models\Forum    | // artinya ada yg ngelike di forum dengan id 2 (likeable_id). berarti forum yg id nya 2 mempunyai 1 like
+     4     |        4          |  App\Models\Posting  | // artinya ada yg ngelike di postingan dengan id 4 (likeable_id). berarti postingan yg id nya 4 mempunyai 1 like
+6. Buka Model Like kemudian model Lesson, terakhir lesson.blade.php
+
+
+7. Buat table tags dan juga table tagables lihat di migration 
+// polymorphic many to many
+                         // Tagables
+ ----------------------------------------------------------+
+    tag_id |   tagable_id      |   tagable_type       |
+     1     |        1          |  App\Models\Forum    | // artinya tag_id 1 (id yg ada didalam table tags misalnya html). berarti forum yg id nya 1 mempunyai tag_id 1, berarti forum id 1 itu tag nya html
+     2     |        1          |  App\Models\Forum    | // artinya tag_id 2 (id yg ada didalam table tags misalnya css). berarti forum yg id nya 1 mempunyai tag_id 1 dan 2 (diitung sama record yg atas), berarti forum id 1 itu tag nya html dan css
+     1     |        2          |  App\Models\Lesson   | // artinya tag_id 1 (id yg ada didalam table tags misalnya html). berarti lesson yg id nya 1 mempunyai tag_id 1 (diitung sama record yg atas), berarti lesson id 1 itu tag nya html
+     3     |        2          |  App\Models\Lesson   | // artinya tag_id 3 (id yg ada didalam table tags misalnya php). berarti lesson yg id nya 1 mempunyai tag_id 1 dan 3 (diitung sama record yg atas), berarti lesson id 1 itu tag nya html dan php
+
+8. Buka model Tag kemudian model Lesson terakhir buka lesson.blade.php
+9. Buka UserController untuk eagerloading
+10. Buka UserController kemudian profile.blade.php, bagian withCount() di UserController. dan bagian where(), has() di profile.blade.php
+
+
+//has many through = menghubungkan 1 table tanpa ada relasi satupun dengan perantara 2 table
+
+   users
+      id      = 1
+      city_id = 1
+
+   forums 
+      user_id = 1
+   
+   cities 
+      id = 1
+      name = bogor
+
+   artinya user yg mempunyai id 1 tempat tinggal nya di bogor, dan forums dengan user_id 1 dibuat oleh org bogor. jadi forum akan mempunyai data city/ yg ditampikan hanyalah org bogor saja, melalui perantara users yg mempunyai data city
+   (artinya yg punya hubungan itu si users dan city, kemudian forums juga mempunya data city dari user)
+   city = cities (plural/lebihbanyak)
+11. Buka model City kemudian UserController(bagian hashmanythrough)
+12. Buka model Lesson dan lesson.blade.php untuk menggunakan pivot(mengambil column selain foreign key yg ada di table penghubung many to many / polymorphic)
+13. Cek UserController di bagian Insert data dengan laravel relation
+14. Cek UserController di bagian update,delete relation 
+15. Cek UserController di bagian create, delete many to many 
+16. Cek UserController di bagian update many to many
+17. Cek UserController di bagian sync
+
+
+// cara mengubah waktu parent. Misalnya ada table users dan table passport, jika user mengubah data di passport, maka akan keubah waktu yg ada dipassport dan juga users. 
+// ibaratnya passport itu ada foreign_key user (user_id), sedangkan users ada primary_key (id), maka antara foreign dan primary data waktu nya akan terupdate (hanya berlaku belongsTo/belongsToMany) one to one & one to Many
+18. Buka UserController bagian update watu parent, lalu buka model passport
+//jadi jika memanggil function editPassport dan otomatis kan bakal melalu model passport, jadi bakal terubah juga waktu updated_at yg uda didaftarin di variabel $touches yg ada di model Passport
+
+
+
+
+
